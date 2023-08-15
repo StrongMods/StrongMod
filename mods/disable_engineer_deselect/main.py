@@ -1,0 +1,3 @@
+from internal.game_controller import disable_engineer_deselect
+
+disable_engineer_deselect()
