@@ -16,7 +16,7 @@ jobs:
     - name: Set up build environment
       run: |
         sudo apt-get update
-        sudo apt-get install -y gcc-mingw-w64-i686
+        sudo apt-get install -y binutils-mingw-w64-i68
 
     - name: Compile project
       run: make
