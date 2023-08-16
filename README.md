@@ -15,6 +15,8 @@ Auto Market mod implemented using StrongMod, and it's included by default
 - Download the release package.
 - Extract the contents to your game's installation path.
 
+3. Run `start_game.bat`
+
 ## Notes:
 - StrongMod is currently in development and may not have a complete set of features yet.
 - StrongMod is not an official tool and is not affiliated with the creators of Stronghold Crusader 1.
