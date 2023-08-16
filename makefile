@@ -1,6 +1,6 @@
 CC=i686-w64-mingw32-gcc
 CFLAGS=-g -c -Wall -masm=intel
-LFLAGS=-shared -v
+LFLAGS=-shared -v -O0
 
 TARGET=game_controller.dll
 SOURCES=game_controller.c
