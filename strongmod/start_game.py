@@ -60,7 +60,7 @@ def create_suspended_process(command_line):
     return pi.dwProcessId
 
 
-process_id = create_suspended_process('./Stronghold_Crusader.exe')
+process_id = create_suspended_process('./Stronghold Crusader.exe')
 process = Pymem(process_id)
 process.inject_python_interpreter()
 
