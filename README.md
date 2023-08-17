@@ -1,4 +1,4 @@
-StrongMod allows you to create mods for Stronghold Crusader 1 using Python.
+StrongMod allows you to create mods for Stronghold Crusader 1 V1.41 using Python.
 
 ## Auto Market Mod
 Auto Market mod implemented using StrongMod, and it's included by default
