@@ -12,7 +12,7 @@ Auto Market mod implemented using StrongMod, and it's included by default
 
 2. Download StrongMod:
 - Get the latest version from: https://github.com/strongmods/StrongMod/releases
-- Download the release package.
+- Download strongmod.zip.
 - Extract the contents to your game's installation path.
 
 3. Run `start_game.bat`
