@@ -188,7 +188,6 @@ void train_unit(int player, int unit) {
         "push eax;"
         "push 0x16;"
         "push edx;"
-        "mov ebp, 0x72C147A0;"
         "mov ecx, 0x1387F38;"
         "mov edx, 0x0000001;"
         "call 0x052ec10;": : "r"(player), "r"(unit));
