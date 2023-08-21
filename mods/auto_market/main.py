@@ -1,6 +1,6 @@
-from api.lord import Lord
-from api.ui import Ui
-from api.game import Game
+from api import Lord
+from api import Ui
+from api import Game
 
 ui = Ui()
 game = Game()

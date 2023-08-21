@@ -1,6 +1,6 @@
 import ctypes
 
-from api.game import Game
+from api import Game
 from internal.game_controller import get_last_message, last_message, send_message, \
     place_wall, train_unit, zoom_in, zoom_out, buy, sell, set_game_speed, \
     get_unit_owner, move_units, place_building
