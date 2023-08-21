@@ -1,6 +1,6 @@
 import ctypes
 
-import api
+from api.game import Game
 from internal.game_controller import get_last_message, last_message, send_message, \
     place_wall, train_unit, zoom_in, zoom_out, buy, sell, set_game_speed, \
     get_unit_owner, move_units, place_building
@@ -25,10 +25,11 @@ def on_tick_listener():
 
         elif len(context.split()) == 4 and context.split()[0] == "place_wall":
             send_message(b"place_wall", str(place_wall(int(context.split()[1]), int(context.split()[2]),
-                                                    int(context.split()[3]))).encode())
+                                                       int(context.split()[3]))).encode())
         elif len(context.split()) == 4 and context.split()[0] == "place_20_walls":
             for i in range(int(context.split()[2]), int(context.split()[2]) + 20):
-                send_message(b"place_20_walls", str(place_wall(int(context.split()[1]), i, int(context.split()[3]))).encode())
+                send_message(b"place_20_walls",
+                             str(place_wall(int(context.split()[1]), i, int(context.split()[3]))).encode())
             for i in range(int(context.split()[2]), int(context.split()[2]) + 20):
                 send_message(b"place_20_walls",
                              str(place_wall(int(context.split()[1]), i, int(context.split()[3]) + 20)).encode())
@@ -36,7 +37,8 @@ def on_tick_listener():
                 send_message(b"place_20_walls",
                              str(place_wall(int(context.split()[1]), int(context.split()[2]) + 20, i)).encode())
             for i in range(int(context.split()[3]), int(context.split()[3]) + 20):
-                send_message(b"place_20_walls", str(place_wall(int(context.split()[1]), int(context.split()[2]), i)).encode())
+                send_message(b"place_20_walls",
+                             str(place_wall(int(context.split()[1]), int(context.split()[2]), i)).encode())
         elif len(context.split()) == 2 and context.split()[0] == "get_character_owner":
             send_message(b"get_character_owner", str(get_unit_owner(int(context.split()[1]))).encode())
         elif len(context.split()) == 1 and context.split()[0] == "zoom_in":
@@ -53,7 +55,9 @@ def on_tick_listener():
             send_message(b"set_game_speed", str(set_game_speed(int(context.split()[1]))).encode())
         elif len(context.split()) == 5 and context.split()[0] == "place_building":
             send_message(b"place_building", str(place_building(int(context.split()[1]), int(context.split()[2]),
-                                                        int(context.split()[3]), int(context.split()[4]))).encode())
+                                                               int(context.split()[3]),
+                                                               int(context.split()[4]))).encode())
 
 
-api.game.set_on_tick_listener(on_tick_listener)
+game = Game()
+game.set_on_tick_listener(on_tick_listener)

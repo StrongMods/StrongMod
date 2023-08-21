@@ -2,7 +2,7 @@ from enum import Enum
 
 from internal.game_controller import get_building_position, get_all_buildings, get_building_type, get_building_owner, \
     get_keep_building
-from internal.lord import Lord
+from api.lord import Lord
 
 
 class BuildingType(Enum):

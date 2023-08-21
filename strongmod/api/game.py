@@ -1,8 +1,9 @@
+from common.singleton import Singleton
 from internal.game_controller import set_on_tick_listener, is_game_created, get_resolution, disable_bot
-from internal.lord import Lord, LordDoesNotExistException
+from api.lord import Lord, LordDoesNotExistException
 
 
-class Game:
+class Game(metaclass=Singleton):
     def __init__(self):
         self.tick_listeners = []
         set_on_tick_listener(self.publish)
@@ -22,7 +23,6 @@ class Game:
                     self.replaced_default_bots[lord.get_bot()].tick(lord)
             except LordDoesNotExistException:
                 pass
-
 
     def is_game_loaded(self):
         pass

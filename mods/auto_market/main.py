@@ -1,5 +1,9 @@
-import api
-from api import ui, game
+from api.lord import Lord
+from api.ui import Ui
+from api.game import Game
+
+ui = Ui()
+game = Game()
 
 load_image = ui.load_image
 
@@ -111,7 +115,7 @@ class MenuStatus:
 
 def on_ui_tick_listener():
     if game.is_game_created():
-        my_lord = api.get_my_lord()
+        my_lord = Lord.get_my_lord()
 
         if not my_lord.has_market():
             return
@@ -288,7 +292,7 @@ def on_ui_tick_listener():
 
 
 def on_game_tick_listener():
-    my_lord = api.get_my_lord()
+    my_lord = Lord.get_my_lord()
     for good, number_of_good_to_sell in MenuStatus.list_of_number_of_goods_to_sell.items():
         if good == "wood" and number_of_good_to_sell != -1 and my_lord.count_woods() >= number_of_good_to_sell:
             my_lord.sell(2, 5)

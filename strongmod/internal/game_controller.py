@@ -1,7 +1,9 @@
 import ctypes
-from ctypes import CDLL
 
-_game_controller = CDLL("./game_controller.dll")
+from internal.game_controller_maker import GameControllerMaker
+
+gameControllerMaker = GameControllerMaker()
+_game_controller = gameControllerMaker.make_game_controller()
 
 free = _game_controller.free_memory
 
@@ -406,7 +408,6 @@ def get_all_buildings():
 _game_controller.get_building_type.restype = ctypes.c_int
 _game_controller.get_building_type.argtypes = [ctypes.c_int]
 get_building_type = _game_controller.get_building_type
-
 
 _game_controller.get_building_owner.restype = ctypes.c_short
 _game_controller.get_building_owner.argtypes = [ctypes.c_int]

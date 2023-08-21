@@ -1,3 +1,4 @@
+from common.singleton import Singleton
 from internal.game_controller import set_on_ui_tick_listener, show_image, get_mouse_position, is_mouse_clicked, \
     disable_mouse_in_game
 from internal.image_converter.bmp_parser import BMPParser
@@ -11,7 +12,7 @@ class Image:
         self.tokens = tokens
 
 
-class Ui:
+class Ui(metaclass=Singleton):
     def __init__(self):
         self.tick_listeners = []
         set_on_ui_tick_listener(self.publish)
