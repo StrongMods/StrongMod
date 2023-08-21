@@ -1,8 +1,8 @@
 from common.singleton import Singleton
 from internal.game_controller import set_on_ui_tick_listener, show_image, get_mouse_position, is_mouse_clicked, \
     disable_mouse_in_game
-from internal.image_converter.bmp_parser import BMPParser
-from internal.image_converter.tgx_builder import TgxImageBuilder
+from common.image_converter.bmp_parser import BMPParser
+from common.image_converter.tgx_builder import TgxImageBuilder
 
 
 class Image:

@@ -1,6 +1,6 @@
 import struct
 
-from internal.image_converter.image import Pixel, Color, Image
+from common.image_converter.image import Pixel, Color, Image
 
 
 class BMPParser:

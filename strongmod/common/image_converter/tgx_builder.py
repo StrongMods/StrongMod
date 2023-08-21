@@ -1,4 +1,4 @@
-from internal.image_converter.image import TgxTokenType
+from common.image_converter.image import TgxTokenType
 
 
 class TgxImageBuilder:

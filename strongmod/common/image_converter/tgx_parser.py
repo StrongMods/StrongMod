@@ -1,6 +1,6 @@
 import struct
 
-from internal.image_converter.image import Image, Pixel, Color, TgxTokenType
+from common.image_converter.image import Image, Pixel, Color, TgxTokenType
 
 
 class TgxImageParser:
