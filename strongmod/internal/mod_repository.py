@@ -14,17 +14,6 @@ class DirectoryManager:
         return os.listdir(path)
 
 
-class FileManager:
-    def read(self, file_name):
-        file = open(file_name, "r")
-        contents = file.read()
-        file.close()
-        return contents
-
-    def is_exists(self, file_name):
-        return os.path.exists(file_name)
-
-
 class ModRepository:
     def __init__(self, mods_path, directory, file):
         self.file = file

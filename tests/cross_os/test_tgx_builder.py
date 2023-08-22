@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from common.image_converter.image import TgxTokenType, Image, Pixel, Color
-from common.image_converter import TgxImageBuilder
+from common.image_converter.tgx_builder import TgxImageBuilder
 
 
 class TestTgxBuilder(TestCase):

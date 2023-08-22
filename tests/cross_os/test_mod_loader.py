@@ -2,14 +2,15 @@ from unittest import TestCase
 
 from cross_os.call_recorder import CallRecorder
 from internal.mod_loader import ModLoader
-from internal.mod_repository import ModRepository, DirectoryManager, FileManager
+from internal.mod_repository import ModRepository, DirectoryManager
+from common.file_system import FileSystem
 
 
 class TestModLoader(TestCase):
     def test_load(self):
         CallRecorder.reset()
         directory_manager = DirectoryManager()
-        file_manager = FileManager()
+        file_manager = FileSystem()
 
         mod_repository = ModRepository("./tests/cross_os/mods", directory_manager, file_manager)
 
