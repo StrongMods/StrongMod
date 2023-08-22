@@ -12,11 +12,12 @@ import sys
 
 sys.path.insert(0, os.path.abspath('../../strongmod/'))
 from internal import game_controller_maker
+from version import version
 
 project = 'StrongMod'
 copyright = '2023, .'
 author = '.'
-release = '1.1.7'
+release = version
 show_authors = False
 html_show_copyright = False
 

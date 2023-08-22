@@ -51,3 +51,4 @@
 /game_controller.dll
 game_controller.o
 /docs/build/
+/strongmod/version.py
