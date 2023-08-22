@@ -1,0 +1,32 @@
+name: Docs
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+permissions:
+    contents: write
+jobs:
+  docs:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - name: Install dependencies
+        run: |
+          pip install sphinx
+
+      - name: Update version
+        run: make strongmod/version.py
+
+      - name: Sphinx build
+        run: |
+          sphinx-build ./docs/source/ ./docs/build
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/build/
+          force_orphan: true
