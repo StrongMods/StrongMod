@@ -14,12 +14,26 @@ class LordDoesNotExistException(Exception):
 
 
 class Lord:
+    """
+    Represents a lord with a unique identifier.
+
+    :param lord_id: The identifier for the lord.
+    :type lord_id: int
+
+    :raises LordDoesNotExistException: If the lord with the given ID does not exist.
+    """
     def __init__(self, lord_id):
         self.lord_id = lord_id
         if not self.is_exist():
             raise LordDoesNotExistException(lord_id)
 
     def get_id(self):
+        """
+        Get the identifier of the lord.
+
+        :return: The identifier of the lord.
+        :rtype: int
+        """
         return self.lord_id
 
     @classmethod
