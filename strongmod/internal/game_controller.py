@@ -417,3 +417,18 @@ get_building_owner = _game_controller.get_building_owner
 
 _game_controller.show_text.restype = ctypes.c_void_p
 show_text = _game_controller.show_text
+
+
+class GameBeginListener:
+    listener = None
+
+
+@ctypes.CFUNCTYPE(ctypes.c_void_p)
+def handle_game_begin_event():
+    GameBeginListener.listener()
+
+
+def set_on_game_begin_listener(listener):
+    GameBeginListener.listener = listener
+
+    _game_controller.execute_callback_on_game_begin(handle_game_begin_event)

@@ -1136,6 +1136,42 @@ void show_text() {
         "mov [0x1FEA094],eax;");
 }
 
+// game begin
+typedef void (*HandleGameBeginEvent)(void);
+
+HandleGameBeginEvent handle_game_begin_event;
+
+void game_begin_hook_handler() {
+    // backup registers
+    asm ("push eax;");
+    asm ("push ebx;");
+    asm ("push ecx;");
+    asm ("push edx;");
+    asm ("push esi;");
+
+    handle_game_begin_event();
+    // restore registers
+    asm ("pop esi;");
+    asm ("pop edx;");
+    asm ("pop ecx;");
+    asm ("pop ebx;");
+    asm ("pop eax;");
+
+    // back to normal path 1
+    asm ("leave;");
+
+    // execute stole code
+    asm ("mov eax,0x0000190;");
+
+    // back to normal path 2
+    asm ("jmp 0x04F6CFD;");
+}
+
+void execute_callback_on_game_begin(HandleGameBeginEvent function) {
+    handle_game_begin_event = function;
+    hook_at(0x04F6CF8, (void*)game_begin_hook_handler);
+}
+
 void free_memory(char *ptr)
 {
     free(ptr);
