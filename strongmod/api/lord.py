@@ -92,82 +92,202 @@ class Lord:
         return get_rations(self.lord_id)
 
     def count_golds(self):
+        """
+        Count the amount of golds owned by the lord.
+
+        :return: The count of golds.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_golds(self.lord_id)
 
     def count_woods(self):
+        """
+        Count the amount of woods owned by the lord.
+
+        :return: The count of woods.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_woods(self.lord_id)
 
     def count_hops(self):
+        """
+        Count the amount of hops owned by the lord.
+
+        :return: The count of hops.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_hops(self.lord_id)
 
     def count_stones(self):
+        """
+        Count the amount of stones owned by the lord.
+
+        :return: The count of stones.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_stones(self.lord_id)
 
     def count_irons(self):
+        """
+        Count the amount of irons owned by the lord.
+
+        :return: The count of irons.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_irons(self.lord_id)
 
     def count_pitches(self):
+        """
+        Count the amount of pitches owned by the lord.
+
+        :return: The count of pitches.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_pitches(self.lord_id)
 
     def count_wheats(self):
+        """
+        Count the amount of wheats owned by the lord.
+
+        :return: The count of wheats.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_wheats(self.lord_id)
 
     def count_ales(self):
+        """
+        Count the amount of ales owned by the lord.
+
+        :return: The count of ales.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_ales(self.lord_id)
 
     def count_flours(self):
+        """
+        Count the amount of flours owned by the lord.
+
+        :return: The count of flours.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_flours(self.lord_id)
 
     def count_breads(self):
+        """
+        Count the amount of breads owned by the lord.
+
+        :return: The count of breads.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_breads(self.lord_id)
 
     def count_cheeses(self):
+        """
+        Count the amount of cheeses owned by the lord.
+
+        :return: The count of cheeses.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_cheeses(self.lord_id)
 
     def count_meats(self):
+        """
+        Count the amount of meats owned by the lord.
+
+        :return: The count of meats.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_meats(self.lord_id)
 
     def count_apples(self):
+        """
+        Count the amount of apples owned by the lord.
+
+        :return: The count of apples.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_apples(self.lord_id)
 
     def count_bows(self):
+        """
+        Count the amount of bows owned by the lord.
+
+        :return: The count of bows.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_bows(self.lord_id)
 
     def count_spears(self):
+        """
+        Count the amount of spears owned by the lord.
+
+        :return: The count of spears.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_spears(self.lord_id)
 
     def count_maces(self):
+        """
+        Count the amount of maces owned by the lord.
+
+        :return: The count of maces.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_maces(self.lord_id)
 
     def count_crossbows(self):
+        """
+        Count the amount of crossbows owned by the lord.
+
+        :return: The count of crossbows.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_crossbows(self.lord_id)
 
     def count_pikes(self):
+        """
+        Count the amount of pikes owned by the lord.
+
+        :return: The count of pikes.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_pikes(self.lord_id)
 
     def count_leather_armor(self):
+        """
+        Count the amount of leather armor owned by the lord.
+
+        :return: The count of leather_armor.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_leather_armor(self.lord_id)
 
     def count_metal_armor(self):
+        """
+        Count the amount of metal armor owned by the lord.
+
+        :return: The count of metal armor.
+        :rtype: int
+        """
         self._lord_should_exist()
         return count_metal_armor(self.lord_id)
 
