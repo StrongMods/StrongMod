@@ -1,3 +1,5 @@
+import copy
+
 from api import Lord
 from api import Ui
 from api import Game
@@ -68,49 +70,36 @@ reset = ui.load_image("./mods/auto_market/images/reset.bmp")
 
 back = ui.load_image("./mods/auto_market/images/back.bmp")
 
+default_list_of_number_of_goods = {"wood": -1, "stone": -1,
+                                   "hops": -1,
+                                   "iron": -1,
+                                   "pitch": -1,
+                                   "wheat": -1,
+                                   "bread": -1,
+                                   "cheese": -1,
+                                   "meat": -1,
+                                   "fruit": -1,
+                                   "ale": -1,
+                                   "flour": -1,
+                                   "bows": -1,
+                                   "crossbows": -1,
+                                   "spears": -1,
+                                   "pikes": -1,
+                                   "maces": -1,
+                                   "swords": -1,
+                                   "leather_armor": -1,
+                                   "metal_armor": -1}
+
 
 class MenuStatus:
     is_market_menu_open = False
     is_good_selected = False
     selected_good = None
-    list_of_number_of_goods_to_sell = {"wood": -1, "stone": -1,
-                                       "hops": -1,
-                                       "iron": -1,
-                                       "pitch": -1,
-                                       "wheat": -1,
-                                       "bread": -1,
-                                       "cheese": -1,
-                                       "meat": -1,
-                                       "fruit": -1,
-                                       "ale": -1,
-                                       "flour": -1,
-                                       "bows": -1,
-                                       "crossbows": -1,
-                                       "spears": -1,
-                                       "pikes": -1,
-                                       "maces": -1,
-                                       "swords": -1,
-                                       "leather_armor": -1,
-                                       "metal_armor": -1}
-    list_of_number_of_goods_to_buy = {"wood": -1, "stone": -1,
-                                      "hops": -1,
-                                      "iron": -1,
-                                      "pitch": -1,
-                                      "wheat": -1,
-                                      "bread": -1,
-                                      "cheese": -1,
-                                      "meat": -1,
-                                      "fruit": -1,
-                                      "ale": -1,
-                                      "flour": -1,
-                                      "bows": -1,
-                                      "crossbows": -1,
-                                      "spears": -1,
-                                      "pikes": -1,
-                                      "maces": -1,
-                                      "swords": -1,
-                                      "leather_armor": -1,
-                                      "metal_armor": -1}
+    list_of_number_of_goods_to_sell = copy.copy(default_list_of_number_of_goods)
+    list_of_number_of_goods_to_buy = copy.copy(default_list_of_number_of_goods)
+
+
+DefaultMenuStatus = MenuStatus
 
 
 def on_ui_tick_listener():
@@ -414,5 +403,12 @@ def on_game_tick_listener():
             my_lord.buy(24, 5)
 
 
+def on_game_begin():
+    # Rest auto market state
+    MenuStatus.list_of_number_of_goods_to_sell = copy.copy(default_list_of_number_of_goods)
+    MenuStatus.list_of_number_of_goods_to_buy = copy.copy(default_list_of_number_of_goods)
+
+
 ui.set_on_tick_listener(on_ui_tick_listener)
 game.set_on_tick_listener(on_game_tick_listener)
+game.register_game_begin_listener(on_game_begin)
