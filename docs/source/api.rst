@@ -3,6 +3,9 @@
 Developer Interface
 ===================
 
+.. autoclass:: api.Game
+    :members:
+
 .. autoclass:: api.Lord
     :members:
 

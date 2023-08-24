@@ -13,8 +13,10 @@ class Message(ctypes.Structure):
                 ("player", ctypes.c_int)]
 
 
-send_message = _game_controller.send_message
-send_message.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
+def show_message(title, message):
+    _game_controller.send_message.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
+    _game_controller.send_message(str(title).encode(), str(message).encode())
+
 
 train_unit = _game_controller.train_unit
 train_unit.argtypes = [ctypes.c_int, ctypes.c_int]

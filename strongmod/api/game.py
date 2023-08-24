@@ -1,5 +1,5 @@
 from common.singleton import Singleton
-from internal.game_controller import set_on_tick_listener, is_game_created, get_resolution, disable_bot
+from internal.game_controller import set_on_tick_listener, is_game_created, get_resolution, disable_bot, show_message
 from api.lord import Lord, LordDoesNotExistException
 
 
@@ -51,3 +51,22 @@ class Game(metaclass=Singleton):
 
     def disable_bot(self, bot_id):
         disable_bot(bot_id)
+
+    def show_message(self, title, message):
+        """
+         Display a message in the chat.
+
+         This method allows the game to show a message in the chat
+
+        :param title: The title of the message.
+        :type title: str
+
+        :param message: The content of the message.
+        :type message: str
+
+        :Example:
+         game = Game()
+
+         game.show_message("hello,", "world")
+        """
+        show_message(title, message)
