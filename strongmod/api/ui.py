@@ -34,6 +34,15 @@ class Ui(metaclass=Singleton):
         return Image(image.width, image.height, tokens)
 
     @staticmethod
+    def load_images(path, image_names):
+        loaded_images = {}
+
+        for image_name in image_names:
+            loaded_images[image_name] = Ui.load_image(f"{path}/{image_name}.bmp")
+
+        return loaded_images
+
+    @staticmethod
     def is_mouse_on_image(mouse_x, mouse_y, image_x, image_y, image_width, image_height):
         image_right = image_x + image_width
         image_bottom = image_y + image_height

@@ -1,3 +1,5 @@
+from enum import Enum
+
 from internal.game_controller import train_unit, move_units, place_wall, place_building, buy, sell, get_tax, set_tax, \
     set_rations, get_rations, count_golds, count_woods, count_hops, count_stones, count_irons, count_pitches, \
     count_wheats, count_ales, count_flours, count_breads, count_cheeses, count_meats, count_apples, count_bows, \
@@ -13,6 +15,29 @@ class LordDoesNotExistException(Exception):
         return f"Lord {self.lord_id} doesn't exist."
 
 
+class GoodType(Enum):
+    WOOD = 2
+    HOP = 3
+    STONE = 4
+    IRON = 6
+    PITCH = 7
+    WHEAT = 9
+    BREAD = 10
+    CHEESE = 11
+    MEAT = 12
+    FRUIT = 13
+    ALE = 14
+    FLOUR = 16
+    BOW = 17
+    CROSSBOW = 18
+    SPEAR = 19
+    PIKE = 20
+    MACE = 21
+    SWORD = 22
+    LEATHER_ARMOR = 23
+    METAL_ARMOR = 24
+
+
 class Lord:
     """
     Represents a lord with a unique identifier.
@@ -22,10 +47,32 @@ class Lord:
 
     :raises LordDoesNotExistException: If the lord with the given ID does not exist.
     """
+
     def __init__(self, lord_id):
         self.lord_id = lord_id
         if not self.is_exist():
             raise LordDoesNotExistException(lord_id)
+        self.count_methods = {
+            GoodType.WOOD: self.count_woods,
+            GoodType.STONE: self.count_stones,
+            GoodType.HOP: self.count_hops,
+            GoodType.IRON: self.count_irons,
+            GoodType.PITCH: self.count_pitches,
+            GoodType.WHEAT: self.count_wheats,
+            GoodType.BREAD: self.count_breads,
+            GoodType.CHEESE: self.count_cheeses,
+            GoodType.MEAT: self.count_meats,
+            GoodType.FRUIT: self.count_apples,
+            GoodType.ALE: self.count_ales,
+            GoodType.FLOUR: self.count_flours,
+            GoodType.BOW: self.count_bows,
+            GoodType.CROSSBOW: self.count_crossbows,
+            GoodType.SPEAR: self.count_spears,
+            GoodType.PIKE: self.count_pikes,
+            GoodType.MACE: self.count_maces,
+            GoodType.LEATHER_ARMOR: self.count_leather_armor,
+            GoodType.METAL_ARMOR: self.count_metal_armor,
+        }
 
     def get_id(self):
         """
@@ -67,13 +114,13 @@ class Lord:
         self._lord_should_exist()
         place_building(self.lord_id, building, x, y)
 
-    def buy(self, good, number_of_good_to_buy):
+    def buy(self, good_type: GoodType, number_of_good_to_buy):
         self._lord_should_exist()
-        buy(number_of_good_to_buy, good, self.lord_id)
+        buy(number_of_good_to_buy, good_type.value, self.lord_id)
 
-    def sell(self, good, number_of_good_to_sell):
+    def sell(self, good_type: GoodType, number_of_good_to_sell):
         self._lord_should_exist()
-        sell(number_of_good_to_sell, good, self.lord_id)
+        sell(number_of_good_to_sell, good_type.value, self.lord_id)
 
     def get_tax(self):
         self._lord_should_exist()
@@ -290,6 +337,23 @@ class Lord:
         """
         self._lord_should_exist()
         return count_metal_armor(self.lord_id)
+
+    def count_good(self, good_type: GoodType) -> int:
+        """
+        Get the amount of a specific type of good owned by the lord.
+
+        :param good_type: The type of the good.
+        :type good_type: GoodType
+
+        :return: The amount of the specified good.
+        :rtype int
+        """
+        count_method = self.count_methods.get(good_type)
+
+        if count_method:
+            return count_method()
+        else:
+            raise ValueError("Invalid good type")
 
     def has_market(self):
         self._lord_should_exist()
