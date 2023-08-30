@@ -2,11 +2,8 @@ import copy
 
 from api import Lord
 from api import GoodType
-from api import Ui
-from api import Game
-
-ui = Ui()
-game = Game()
+from api import ui
+from api import game
 
 load_image = ui.load_image
 
