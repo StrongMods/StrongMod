@@ -116,70 +116,13 @@ void enable_chat() {
 }
 
 
-void send_message(char* name, char* message) {
-    asm("mov eax,0x0000000;"
-        "mov ebx,0x000000E;"
-        "mov ecx,0x191D768;"
-        "mov edx,0x0000001;"
+void show_message(char* message) {
+    strcpy((char*)0x1A1F240, message);
+
+    asm("mov ecx,0x191D768;"
         "push 0x00;"
         "push 0x01;"
-        "call 1f;"
-        "jmp end;"
-        "1:;"
-        "push ebx;"
-        "push esi;"
-        "mov esi,ecx;"
-        "add dword ptr [esi+0x010566C],01;"
-        "mov eax,[esi+0x010566C];"
-        "cmp eax,0x14;"
-        "push edi;"
-        "jl 2f;"
-        "mov dword ptr [ESI + 0x10566c],0x0;"
-        "2:;"
-        "mov eax,[esi+0x010566C];"
-        "mov edi,[esp+0x10];"
-        "shl eax,0x04;"
-        "mov [eax+esi+0x0105678],edi;"
-        "call dword ptr [0x059E228];"
-        "mov ecx,[esi+0x010566C];"
-        "mov ebx,[esp+0x14];"
-        "shl ecx,0x04;"
-        "mov [ecx+esi+0x010567C],eax;"
-        "mov edx,[esi+0x010566C];"
-        "add edx,0x0010568;"
-        "shl edx,0x04;"
-        "mov dword ptr [EDX + ESI*0x1],0x1;"
-        "mov eax,[esi+0x010566C];"
-        "shl eax,0x04;"
-        "mov [eax+esi+0x0105684],ebx;"
-        "mov ecx,[esi+0x010566C];"
-        "imul ecx,ecx,0x00000FA;"
-        "lea edx,[ecx+esi+0x0101BD2];"
-        "push edx;"
-        "lea eax,[esi+0x0101AD8];");
-    asm("push eax;"
-        "push 0x00000FA;"
-        "mov ecx,0x165272C;"
-        "call 0x0471830;"
-        "test edi,edi;"
-        "mov ecx,[esi+0x010566C];"
-        "imul ecx,ecx,0x00000FA;"
-        "lea edx,[ecx+esi+0x0102F5A];"
-        "push edx;"
-        "push 0x07;"
-        "push 0x4C;"
-        "mov ecx,0x2157578;"
-        "call 0x046A050;" : : "r"(message));
-    asm("push eax;"
-        "push 0x00000FA;"
-        "mov ecx,0x165272C;"
-        "call 0x0471830;"
-        "pop edi;"
-        "mov dword ptr [ESI + 0x1072f0],0x0;"
-        "pop esi;"
-        "pop ebx;"
-        "ret 0x008;"
-        "end:;": : "r"(name));
+        "call 0x047F6A0;");
 }
 
 
