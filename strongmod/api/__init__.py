@@ -6,3 +6,5 @@ from .lord import GoodType
 from .plant import Plant
 from .unit import Unit
 from .map import Map
+game = Game()
+ui = Ui()
