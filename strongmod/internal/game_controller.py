@@ -25,9 +25,6 @@ last_message = Message()
 get_last_message = _game_controller.get_last_message
 get_last_message.restype = Message
 
-_game_controller.move_units.argtypes = (ctypes.POINTER(ctypes.c_int), ctypes.c_int, ctypes.c_int, ctypes.c_int)
-_game_controller.move_units.restype = ctypes.c_int
-
 _game_controller.place_wall.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_int]
 _game_controller.place_wall.restype = ctypes.c_int
 place_wall = _game_controller.place_wall
@@ -200,15 +197,6 @@ count_lords = _game_controller.count_lords
 
 _game_controller.count_units.restype = ctypes.c_int
 count_units = _game_controller.count_units
-
-
-def move_units(units, x, y):
-    c_array = (ctypes.c_int * len(units))(*units)
-
-    result = _game_controller.move_units(c_array, len(units), x, y)
-
-    return result
-
 
 _game_controller.enable_chat()
 

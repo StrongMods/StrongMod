@@ -1,6 +1,6 @@
 from enum import Enum
 
-from internal.game_controller import train_unit, move_units, place_wall, place_building, buy, sell, get_tax, set_tax, \
+from internal.game_controller import train_unit, place_wall, place_building, buy, sell, get_tax, set_tax, \
     set_rations, get_rations, count_golds, count_woods, count_hops, count_stones, count_irons, count_pitches, \
     count_wheats, count_ales, count_flours, count_breads, count_cheeses, count_meats, count_apples, count_bows, \
     count_spears, count_maces, count_crossbows, count_pikes, count_leather_armor, count_metal_armor, is_lord_exist, \
@@ -102,9 +102,6 @@ class Lord:
         self._lord_should_exist()
         train_unit(self.lord_id, unit)
 
-    def move_units(self, units, x, y):
-        self._lord_should_exist()
-        move_units(units, x, y)
 
     def place_wall(self, x, y):
         self._lord_should_exist()
