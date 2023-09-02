@@ -1,0 +1,6 @@
+auto_market
+chat
+can_place_building_on_units
+disable_accessible_position_update_limit
+disable_auto_place_stockpile
+disable_engineer_deselect

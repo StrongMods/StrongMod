@@ -18,3 +18,15 @@ class TestModLoader(TestCase):
         mod_loader.load_mods()
 
         self.assertEqual(2, CallRecorder.get_called())
+
+    def test_load_disable_mods_should_not_load(self):
+        CallRecorder.reset()
+        directory_manager = DirectoryManager()
+        file_manager = FileSystem()
+
+        mod_repository = ModRepository("./tests/cross_os/mods2", directory_manager, file_manager)
+
+        mod_loader = ModLoader(mod_repository)
+        mod_loader.load_mods()
+
+        self.assertEqual(3, CallRecorder.get_called())

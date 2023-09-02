@@ -7,6 +7,7 @@ class Mod:
     name: str
     description: str
     path: str
+    enabled: bool = False
 
 
 class DirectoryManager:
@@ -29,9 +30,11 @@ class ModRepository:
         return mods
 
     def find_mod_if_exists(self, mod_directory_name):
+        name_of_enabled_mods = self.find_name_of_enabled_mods()
         if self.file.is_exists(self.mods_path + "/" + mod_directory_name + "/" + "main.py"):
             return Mod(name=mod_directory_name, description=self._get_description(mod_directory_name),
-                       path=self.mods_path + "/" + mod_directory_name)
+                       path=self.mods_path + "/" + mod_directory_name,
+                       enabled=True if mod_directory_name in name_of_enabled_mods else False)
         else:
             return None
 
@@ -40,3 +43,12 @@ class ModRepository:
             return self.file.read(self.mods_path + "/" + mod_directory_name + "/" + "description.txt")
         except FileNotFoundError:
             return ""
+
+    def find_name_of_enabled_mods(self):
+        try:
+            return self.file.read(self.mods_path + "/" + "enabled_mods.txt").split("\n")
+        except FileNotFoundError:
+            return []
+
+    def find_all_enabled_mods(self):
+        return list(filter(lambda mod: mod.enabled, self.find_all_mods()))

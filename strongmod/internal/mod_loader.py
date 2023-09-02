@@ -6,7 +6,7 @@ class ModLoader:
         self.mod_repository = mod_repository
 
     def load_mods(self):
-        for mod in self.mod_repository.find_all_mods():
+        for mod in self.mod_repository.find_all_enabled_mods():
             spec = importlib.util.spec_from_file_location("", mod.path + "/" + "main.py")
             foo = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(foo)

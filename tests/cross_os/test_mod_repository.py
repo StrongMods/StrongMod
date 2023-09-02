@@ -29,8 +29,8 @@ class FakeFileManager:
 
 
 class StubFileManager:
-    def read(self):
-        pass
+    def read(self, path):
+        return ""
 
     def is_exists(self, file_name):
         return False
@@ -53,9 +53,9 @@ class TestModRepository(TestCase):
 
         directory_manager = DirectoryManagerMock([mod1.name, mod2.name])
         file_manager = FakeFileManager({f"{self.mods_path}/{mod1_name}/description.txt": mod1_description,
-                                f"{self.mods_path}/{mod2_name}/description.txt": mod2_description,
-                                f"{self.mods_path}/{mod1_name}/main.py": "",
-                                f"{self.mods_path}/{mod2_name}/main.py": ""})
+                                        f"{self.mods_path}/{mod2_name}/description.txt": mod2_description,
+                                        f"{self.mods_path}/{mod1_name}/main.py": "",
+                                        f"{self.mods_path}/{mod2_name}/main.py": ""})
         mod_repository = ModRepository(self.mods_path, directory_manager, file_manager)
 
         returned_mods = mod_repository.find_all_mods()
@@ -91,3 +91,60 @@ class TestModRepository(TestCase):
 
         self.assertListEqual([], mods)
         self.assertTrue(mod is None)
+
+    def test_find_name_of_enabled_mods(self):
+        directory = DirectoryManagerMock([])
+        file = FakeFileManager({f"{self.mods_path}/enabled_mods.txt": "mod1\nmod2\nmod3"})
+        mod_repository = ModRepository(f"{self.mods_path}", directory, file)
+
+        name_mods = mod_repository.find_name_of_enabled_mods()
+
+        self.assertListEqual(["mod1", "mod2", "mod3"], name_mods)
+
+    def test_find_mod_enabled_attribute(self):
+        directory = DirectoryManagerMock(["mod1", "mod2", "mod3", "mod4", "mod8"])
+        file = FakeFileManager({f"{self.mods_path}/mod1/main.py": "",
+                                f"{self.mods_path}/mod2/main.py": "",
+                                f"{self.mods_path}/mod3/main.py": "",
+                                f"{self.mods_path}/mod4/main.py": "",
+                                f"{self.mods_path}/mod8/main.py": "",
+                                f"{self.mods_path}/enabled_mods.txt": "mod3\nmod8\nmod2"})
+        mod_repository = ModRepository(f"{self.mods_path}", directory, file)
+
+        returned_mods = mod_repository.find_all_mods()
+
+        self.assertEqual("mod1", returned_mods[0].name)
+        self.assertFalse(returned_mods[0].enabled)
+
+        self.assertEqual("mod2", returned_mods[1].name)
+        self.assertTrue(returned_mods[1].enabled)
+
+        self.assertEqual("mod3", returned_mods[2].name)
+        self.assertTrue(returned_mods[2].enabled)
+
+        self.assertEqual("mod4", returned_mods[3].name)
+        self.assertFalse(returned_mods[3].enabled)
+
+        self.assertEqual("mod8", returned_mods[4].name)
+        self.assertTrue(returned_mods[4].enabled)
+
+    def test_find_all_enabled_mods(self):
+        directory = DirectoryManagerMock(["mod1", "mod2", "mod3", "mod4", "mod8"])
+        file = FakeFileManager({f"{self.mods_path}/mod1/main.py": "",
+                                f"{self.mods_path}/mod2/main.py": "",
+                                f"{self.mods_path}/mod3/main.py": "",
+                                f"{self.mods_path}/mod4/main.py": "",
+                                f"{self.mods_path}/mod8/main.py": "",
+                                f"{self.mods_path}/enabled_mods.txt": "mod3\nmod8\nmod2"})
+        mod_repository = ModRepository(f"{self.mods_path}", directory, file)
+
+        returned_mods = mod_repository.find_all_enabled_mods()
+
+        self.assertEqual("mod2", returned_mods[0].name)
+        self.assertTrue(returned_mods[0].enabled)
+
+        self.assertEqual("mod3", returned_mods[1].name)
+        self.assertTrue(returned_mods[1].enabled)
+
+        self.assertEqual("mod8", returned_mods[2].name)
+        self.assertTrue(returned_mods[2].enabled)
