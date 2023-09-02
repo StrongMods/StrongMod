@@ -24,6 +24,9 @@ class FakeFileManager:
         else:
             raise FileNotFoundError
 
+    def write(self, path, content):
+        self.files[path] = content
+
     def is_exists(self, file_name):
         return True
 
@@ -144,6 +147,33 @@ class TestModRepository(TestCase):
         self.assertTrue(returned_mods[0].enabled)
 
         self.assertEqual("mod3", returned_mods[1].name)
+        self.assertTrue(returned_mods[1].enabled)
+
+        self.assertEqual("mod8", returned_mods[2].name)
+        self.assertTrue(returned_mods[2].enabled)
+
+    def test_enable_and_disable_mod(self):
+        directory = DirectoryManagerMock(["mod1", "mod2", "mod3", "mod4", "mod8"])
+        file = FakeFileManager({f"{self.mods_path}/mod1/main.py": "",
+                                f"{self.mods_path}/mod2/main.py": "",
+                                f"{self.mods_path}/mod3/main.py": "",
+                                f"{self.mods_path}/mod4/main.py": "",
+                                f"{self.mods_path}/mod8/main.py": "",
+                                f"{self.mods_path}/enabled_mods.txt": ""})
+        mod_repository = ModRepository(f"{self.mods_path}", directory, file)
+        mod_repository.enable_mod("mod1")
+        mod_repository.disable_mod("mod3")
+        mod_repository.enable_mod("mod8")
+        mod_repository.enable_mod("mod4")
+        mod_repository.disable_mod("mod2")
+        returned_mods = mod_repository.find_all_enabled_mods()
+
+        self.assertEqual(3, len(returned_mods))
+
+        self.assertEqual("mod1", returned_mods[0].name)
+        self.assertTrue(returned_mods[0].enabled)
+
+        self.assertEqual("mod4", returned_mods[1].name)
         self.assertTrue(returned_mods[1].enabled)
 
         self.assertEqual("mod8", returned_mods[2].name)

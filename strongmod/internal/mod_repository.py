@@ -20,6 +20,7 @@ class ModRepository:
         self.file = file
         self.directory = directory
         self.mods_path = mods_path
+        self.enabled_mods_path = self.mods_path + "/" + "enabled_mods.txt"
 
     def find_all_mods(self):
         mods = []
@@ -52,3 +53,20 @@ class ModRepository:
 
     def find_all_enabled_mods(self):
         return list(filter(lambda mod: mod.enabled, self.find_all_mods()))
+
+    def disable_mod(self, mod_name):
+        enabled_mod_names = self.find_name_of_enabled_mods()
+
+        if mod_name in enabled_mod_names:
+            enabled_mod_names.remove(mod_name)
+
+        self.file.write(self.enabled_mods_path, "\n".join(enabled_mod_names))
+
+    def enable_mod(self, mod_name):
+        enabled_mod_names = self.find_name_of_enabled_mods()
+
+        if mod_name not in enabled_mod_names:
+            enabled_mod_names.append(mod_name)
+
+        self.file.write(self.enabled_mods_path, "\n".join(enabled_mod_names))
+
