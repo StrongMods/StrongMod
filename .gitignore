@@ -50,5 +50,6 @@
 /build/
 /game_controller.dll
 game_controller.o
-/docs/build/
-/strongmod/version.py
+/strongmod/docs/build/
+/strongmod/strongmod/version.py
+/strongmod/cpython

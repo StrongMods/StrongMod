@@ -336,12 +336,9 @@ class Lord:
         return count_metal_armor(self.lord_id)
 
     def count_good(self, good_type: GoodType) -> int:
-        """
-        Get the amount of a specific type of good owned by the lord.
-
+        """Get the amount of a specific type of good owned by the lord.
         :param good_type: The type of the good.
         :type good_type: GoodType
-
         :return: The amount of the specified good.
         :rtype int
         """

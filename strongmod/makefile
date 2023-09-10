@@ -23,12 +23,16 @@ strongmod/version.py:
 
 setup-environment:
 	sudo apt-get update
-	sudo apt-get install -y gcc-mingw-w64-i686 unzip
+	sudo apt-get install -y gcc-mingw-w64-i686 unzip zip
 
 download-and-unzip-cpython:
-	wget https://www.python.org/ftp/python/3.8.10/python-3.8.10-embed-win32.zip
-	unzip -n python-3.8.10-embed-win32.zip
-	rm python-3.8.10-embed-win32.zip
+	mkdir -p cpython
+	wget https://www.python.org/ftp/python/3.8.10/python-3.8.10-embed-win32.zip -O cpython/python-3.8.10-embed-win32.zip
+	unzip -n cpython/python-3.8.10-embed-win32.zip -d cpython/
+	rm cpython/python-3.8.10-embed-win32.zip
+
+zip-project:
+	cd .. && zip -r ./strongmod/strongmod.zip ./strongmod ./start_game.bat
 
 .PHONY: strongmod/version.py
 

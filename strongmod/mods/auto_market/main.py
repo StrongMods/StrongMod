@@ -7,7 +7,7 @@ from api import game
 
 load_image = ui.load_image
 
-images_path = "./mods/auto_market/images"
+images_path = "./strongmod/mods/auto_market/images"
 
 load_images = ui.load_images
 

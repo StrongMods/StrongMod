@@ -1,7 +1,9 @@
 import ctypes
+import os
 import sys
 
-sys.path.append('strongmod')
+# sys.path.append('strongmod/strongmod')
+sys.path.insert(0, os.path.abspath('./strongmod/strongmod'))
 
 from pymem import Pymem
 
@@ -64,4 +66,4 @@ process_id = create_suspended_process('./Stronghold Crusader.exe')
 process = Pymem(process_id)
 process.inject_python_interpreter()
 
-process.inject_python_shellcode("import strongmod.init")
+process.inject_python_shellcode("import sys;import os;sys.path.insert(0, os.path.abspath('./strongmod'));import strongmod.init")

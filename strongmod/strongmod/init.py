@@ -7,7 +7,7 @@ from internal.mod_loader import ModLoader
 from internal.mod_repository import ModRepository, DirectoryManager
 from common.file_system import FileSystem
 
-_game_controller = CDLL("game_controller.dll")
+_game_controller = CDLL("./strongmod/game_controller.dll")
 
 entry = 0x0584026
 t = Thread(target=CFUNCTYPE(c_void_p)(entry))
@@ -24,5 +24,5 @@ directory_manager = DirectoryManager()
 file_manager = FileSystem()
 
 
-ModLoader(ModRepository("./mods", directory_manager, file_manager)).load_mods()
+ModLoader(ModRepository("./strongmod/mods", directory_manager, file_manager)).load_mods()
 t.join()

@@ -14,4 +14,3 @@ Developer Interface
 
 .. autoclass:: api.Unit
     :members:
-
