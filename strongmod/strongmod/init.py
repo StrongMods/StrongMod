@@ -1,3 +1,4 @@
+import sys
 import ctypes
 from ctypes import CDLL
 from ctypes import CFUNCTYPE, c_void_p
@@ -12,6 +13,14 @@ _game_controller = CDLL("./strongmod/game_controller.dll")
 entry = 0x0584026
 t = Thread(target=CFUNCTYPE(c_void_p)(entry))
 t.start()
+
+kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
+kernel32.AllocConsole()
+
+sys.stdout = open('CONOUT$', 'w')
+sys.stderr = open('CONOUT$', 'w')
+
+sys.stdin = open('CONIN$', 'r')
 
 
 @ctypes.CFUNCTYPE(ctypes.c_void_p)
