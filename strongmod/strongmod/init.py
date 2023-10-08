@@ -1,18 +1,16 @@
-import sys
 import ctypes
+import sys
 from ctypes import CDLL
-from ctypes import CFUNCTYPE, c_void_p
-from threading import Thread
+import time
 
+from common.file_system import FileSystem
 from internal.mod_loader import ModLoader
 from internal.mod_repository import ModRepository, DirectoryManager
-from common.file_system import FileSystem
 
 _game_controller = CDLL("./strongmod/game_controller.dll")
+if _game_controller.is_extreme() == 1:
+    _game_controller = CDLL("./strongmod/game_controller_extreme.dll")
 
-entry = 0x0584026
-t = Thread(target=CFUNCTYPE(c_void_p)(entry))
-t.start()
 
 kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
 kernel32.AllocConsole()
@@ -34,4 +32,6 @@ file_manager = FileSystem()
 
 
 ModLoader(ModRepository("./strongmod/mods", directory_manager, file_manager)).load_mods()
-t.join()
+
+while True:
+    time.sleep(1)

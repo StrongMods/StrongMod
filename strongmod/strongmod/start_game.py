@@ -52,7 +52,7 @@ def create_suspended_process(command_line):
         None,
         None,
         False,
-        ctypes.c_uint32(0x00000004),  # CREATE_SUSPENDED flag
+        ctypes.c_uint32(0x00000000),  # CREATE_SUSPENDED flag
         None,
         None,
         ctypes.byref(si),
@@ -62,7 +62,7 @@ def create_suspended_process(command_line):
     return pi.dwProcessId
 
 
-process_id = create_suspended_process('./Stronghold Crusader.exe')
+process_id = create_suspended_process('./' + sys.argv[1])
 process = Pymem(process_id)
 process.inject_python_interpreter()
 

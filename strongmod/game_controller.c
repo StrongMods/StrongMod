@@ -44,15 +44,27 @@ void game_tick_hook_handler() {
     asm ("pop ebx;");
     asm ("pop eax;");
     // execute stole code
+#if EXTREME
+    asm ("mov eax,[0x2A7B278];");
+#else
     asm ("mov eax,[0x1FE7D78];");
+#endif
     // back to normal path
     asm ("leave;");
+#if EXTREME
+    asm ("jmp 0x045CE91");
+#else
     asm ("jmp 0x045CC81");
+#endif
 }
 
 void execute_callback_on_game_tick(HandleGameTickEvent function) {
     handle_game_tick_event = function;
+#if EXTREME
+    hook_at(0x045CE8C, (void*)game_tick_hook_handler);
+#else
     hook_at(0x045CC7C, (void*)game_tick_hook_handler);
+#endif
 }
 
 // ui tick
@@ -84,12 +96,20 @@ void ui_tick_hook_handler() {
     asm ("mov [esi+0x00001E0],eax;");
 
     // back to normal path 2
+#if EXTREME
+    asm ("jmp 0x047031C;");
+#else
     asm ("jmp 0x04700fc;");
+#endif
 }
 
 void execute_callback_on_ui_tick(HandleUITickEvent function) {
     handle_ui_tick_event = function;
+#if EXTREME
+    hook_at(0x0470314, (void*)ui_tick_hook_handler);
+#else
     hook_at(0x04700F4, (void*)ui_tick_hook_handler);
+#endif
 }
 
 typedef struct {
@@ -98,35 +118,89 @@ typedef struct {
 } Message;
 
 void get_last_message(Message *last_message) {
+#if EXTREME
+    char *context = (char *)((0x24B283A) + ((int)(*((int *)0x24B62D4)) * 0xFA));
+#else
     char *context = (char *)((0x1A1F33A) + ((int)(*((int *)0x1A22DD4)) * 0xFA));
+#endif
+#if EXTREME
+    int *player = (int *)((0x24B62E0) + ((int)(*((int *)0x24B62D4)) * 0x10));
+#else
     int *player = (int *)((0x1A22DE0) + ((int)(*((int *)0x1A22DD4)) * 0x10));
+#endif
     last_message->context = context;
     last_message->player = *player;
 }
 
 void enable_chat() {
     char jmp = 0xEB;
+#if EXTREME
+    set_memory_permission(0x04b3254, 1, PAGE_EXECUTE_READWRITE);
+#else
     set_memory_permission(0x04B30E4, 1, PAGE_EXECUTE_READWRITE);
+#endif
+#if EXTREME
+    *(char *)(0x04b3254) = jmp;
+#else
     *(char *)(0x04B30E4) = jmp;
+#endif
+
+#if EXTREME
+    set_memory_permission(0x04b3303, 1, PAGE_EXECUTE_READWRITE);
+#else
     set_memory_permission(0x04B3193, 1, PAGE_EXECUTE_READWRITE);
+#endif
+#if EXTREME
+    *(char *)(0x04b3303) = jmp;
+#else
     *(char *)(0x04B3193) = jmp;
+#endif
     short nops = 0x9090;
+#if EXTREME
+    set_memory_permission(0x04b32e2, 2, PAGE_EXECUTE_READWRITE);
+#else
     set_memory_permission(0x04b3172, 2, PAGE_EXECUTE_READWRITE);
+#endif
+#if EXTREME
+    *(short *)(0x04b32e2) = nops;
+#else
     *(short *)(0x04b3172) = nops;
+#endif
+
 }
 
 
 void show_message(char* message) {
+#if EXTREME
+    strcpy((char*)0x24b2740, message);
+#else
     strcpy((char*)0x1A1F240, message);
-
+#endif
+#if EXTREME
+    asm("mov ecx,0x23547d8;"
+        "push 0x00;"
+        "push 0x01;"
+        "call 0x047f870;");
+#else
     asm("mov ecx,0x191D768;"
         "push 0x00;"
         "push 0x01;"
         "call 0x047F6A0;");
+#endif
+
 }
 
 
 void train_unit(int player, int unit) {
+#if EXTREME
+    asm("push 0x0;"
+        "push eax;"
+        "push 0x16;"
+        "push edx;"
+        "mov ecx, 0x145ca28;"
+        "mov edx, 0x0000001;"
+        "call 0x052f030;": : "r"(player), "r"(unit));
+#else
     asm("push 0x0;"
         "push eax;"
         "push 0x16;"
@@ -134,6 +208,7 @@ void train_unit(int player, int unit) {
         "mov ecx, 0x1387F38;"
         "mov edx, 0x0000001;"
         "call 0x052ec10;": : "r"(player), "r"(unit));
+#endif
 }
 
 void place_wall(int lord_id, int x, int y) {
@@ -160,12 +235,20 @@ int get_unit_owner(int unit) {
 
 int is_game_loaded() {
     int is_loaded;
+#if EXTREME
+    asm("mov eax, [0x0f2ce3c];": "=r" (is_loaded) : :);
+#else
     asm("mov eax, [0x0F2C9BC];": "=r" (is_loaded) : :);
+#endif
     return is_loaded;
 }
 
 void set_game_speed(int speed) {
+#if EXTREME
+    asm("mov [0x2a7b2d8], eax;": : "r"(speed):);
+#else
     asm("mov [0x1FE7DD8], eax;": : "r"(speed):);
+#endif
 }
 
 void zoom_in() {
@@ -185,8 +268,17 @@ int get_buying_price(int player_id, int good_id, int number_of_goods) {
         "push [%2];"
         // player id
         "push [%3];"
+#if EXTREME
+        "mov ecx, 0x112b538;"
+#else
         "mov ecx, 0x112B0B8;"
-        "call 0x04588A0;": "=a"(price): "m"(number_of_goods), "m"(good_id), "m"(player_id));
+#endif
+#if EXTREME
+        "call 0x0458ad0;"
+#else
+        "call 0x04588A0;"
+#endif
+        : "=a"(price): "m"(number_of_goods), "m"(good_id), "m"(player_id));
     return price;
 }
 
@@ -331,45 +423,165 @@ int _count_goods(int lord_id, int good_base_address) {
     return good_count;
 }
 
-int count_golds(int lord_id) { return _count_goods(lord_id, 0x115FCF8); }
+int count_golds(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f2938);
+#else
+    return _count_goods(lord_id, 0x115FCF8);
+#endif
+}
 
-int count_woods(int lord_id) { return _count_goods(lord_id, 0x115FCC4); }
+int count_woods(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f2904);
+#else
+    return _count_goods(lord_id, 0x115FCC4);
+#endif
+}
 
-int count_hops(int lord_id) { return _count_goods(lord_id, 0x115FCC8); }
+int count_hops(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f2908);
+#else
+    return _count_goods(lord_id, 0x115FCC8);
+#endif
+}
 
-int count_stones(int lord_id) { return _count_goods(lord_id, 0x115FCCC); }
+int count_stones(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f290c);
+#else
+    return _count_goods(lord_id, 0x115FCCC);
+#endif
+}
 
-int count_irons(int lord_id) { return _count_goods(lord_id, 0x115FCD4); }
+int count_irons(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f2914);
+#else
+    return _count_goods(lord_id, 0x115FCD4);
+#endif
+}
 
-int count_pitches(int lord_id) { return _count_goods(lord_id, 0x115FCD8); }
+int count_pitches(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f2918);
+#else
+    return _count_goods(lord_id, 0x115FCD8);
+#endif
+}
 
-int count_wheats(int lord_id) { return _count_goods(lord_id, 0x115FCE0); }
+int count_wheats(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f2920);
+#else
+    return _count_goods(lord_id, 0x115FCE0);
+#endif
+}
 
-int count_ales(int lord_id) { return _count_goods(lord_id, 0x115FCF4); }
+int count_ales(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f2934);
+#else
+    return _count_goods(lord_id, 0x115FCF4);
+#endif
+}
 
-int count_flours(int lord_id) { return _count_goods(lord_id, 0x115FCFC); }
+int count_flours(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f293c);
+#else
+    return _count_goods(lord_id, 0x115FCFC);
+#endif
+}
 
-int count_breads(int lord_id) { return _count_goods(lord_id, 0x115FCE4); }
+int count_breads(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f2924);
+#else
+    return _count_goods(lord_id, 0x115FCE4);
+#endif
+}
 
-int count_cheeses(int lord_id) { return _count_goods(lord_id, 0x115FCE8); }
+int count_cheeses(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f2928);
+#else
+    return _count_goods(lord_id, 0x115FCE8);
+#endif
+}
 
-int count_meats(int lord_id) { return _count_goods(lord_id, 0x115FCEC); }
+int count_meats(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f292c);
+#else
+    return _count_goods(lord_id, 0x115FCEC);
+#endif
+}
 
-int count_apples(int lord_id) { return _count_goods(lord_id, 0x115FCF0); }
+int count_apples(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f2930);
+#else
+    return _count_goods(lord_id, 0x115FCF0);
+#endif
+}
 
-int count_bows(int lord_id) { return _count_goods(lord_id, 0x115FD00); }
+int count_bows(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f2940);
+#else
+    return _count_goods(lord_id, 0x115FD00);
+#endif
+}
 
-int count_spears(int lord_id) { return _count_goods(lord_id, 0x115FD08); }
+int count_spears(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f2948);
+#else
+    return _count_goods(lord_id, 0x115FD08);
+#endif
+}
 
-int count_maces(int lord_id) { return _count_goods(lord_id, 0x115FD10); }
+int count_maces(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f2950);
+#else
+    return _count_goods(lord_id, 0x115FD10);
+#endif
+}
 
-int count_crossbows(int lord_id) { return _count_goods(lord_id, 0x115FD04); }
+int count_crossbows(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f2944);
+#else
+    return _count_goods(lord_id, 0x115FD04);
+#endif
+}
 
-int count_pikes(int lord_id) { return _count_goods(lord_id, 0x115FD0C); }
+int count_pikes(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f294c);
+#else
+    return _count_goods(lord_id, 0x115FD0C);
+#endif
+}
 
-int count_leather_armor(int lord_id) { return _count_goods(lord_id, 0x115FD18); }
+int count_leather_armor(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f2958);
+#else
+    return _count_goods(lord_id, 0x115FD18);
+#endif
+}
 
-int count_metal_armor(int lord_id) { return _count_goods(lord_id, 0x115FD1C); }
+int count_metal_armor(int lord_id) {
+#if EXTREME
+    return _count_goods(lord_id, 0x11f295c);
+#else
+    return _count_goods(lord_id, 0x115FD1C);
+#endif
+}
 
 void set_tax(int lord_id, int tax) {
     asm("mov eax, [%0];"
@@ -537,35 +749,74 @@ void start_custom_skirmish(char* map, int lords_position[8]) {
 
 
 void set_accessible_position_update_limit(char new_limit) {
+#if EXTREME
+    set_memory_permission(0x049978E, 1, PAGE_EXECUTE_READWRITE);
+    unsigned char *limit = (unsigned char *)0x049978E;
+#else
     set_memory_permission(0x049961E, 1, PAGE_EXECUTE_READWRITE);
     unsigned char *limit = (unsigned char *)0x049961E;
+#endif
     *limit = new_limit;
 }
 
 void _engineer_deselect() {
+#if EXTREME
+    if ((*(int *)0x145cfa8 < (2*2) && *(int *)0x2a7afec==190) || (*(int *)0x145cfa8 < (3*2) && *(int *)0x2a7afec==191)
+        || (*(int *)0x145cfa8 < (4*2) && *(int *)0x2a7afec==192) || (*(int *)0x145cfa8 < (5*2) && *(int *)0x2a7afec==193)
+        || (*(int *)0x145cfa8 < (1*2) && *(int *)0x2a7afec==194) || (*(int *)0x145cfa8 < (2*2) && *(int *)0x2a7afec==358)) {
+        asm("mov dword ptr [0x2a7afec], 0;");
+#else
     if ((*(int *)0x13884B8 < (2*2) && *(int *)0x1fe7aec==190) || (*(int *)0x13884B8 < (3*2) && *(int *)0x1fe7aec==191)
         || (*(int *)0x13884B8 < (4*2) && *(int *)0x1fe7aec==192) || (*(int *)0x13884B8 < (5*2) && *(int *)0x1fe7aec==193)
         || (*(int *)0x13884B8 < (1*2) && *(int *)0x1fe7aec==194) || (*(int *)0x13884B8 < (2*2) && *(int *)0x1fe7aec==358)) {
         asm("mov dword ptr [0x1fe7aec], 0;");
+#endif
     }
     asm("leave;"
+#if EXTREME
+        "jmp 0x0446361;");
+#else
         "jmp 0x0446131;");
+#endif
 }
 
 void disable_engineer_deselect() {
+#if EXTREME
+    hook_at(0x044635b, (void*)_engineer_deselect);
+#else
     hook_at(0x044612b, (void*)_engineer_deselect);
+#endif
+#if EXTREME
+    set_memory_permission(0x056579d, 1, PAGE_EXECUTE_READWRITE);
+#else
     set_memory_permission(0x056537F, 1, PAGE_EXECUTE_READWRITE);
+#endif
+#if EXTREME
+    set_memory_permission(0x05657bb, 1, PAGE_EXECUTE_READWRITE);
+#else
     set_memory_permission(0x056539D, 1, PAGE_EXECUTE_READWRITE);
+#endif
+#if EXTREME
+    *(char *)0x056579F = 0x6;
+#else
     *(char *)0x056537F = 0x6;
+#endif
+#if EXTREME
+    *(char *)0x05657BD = 0x6;
+#else
     *(char *)0x056539D = 0x6;
-
+#endif
 }
 
 int is_human_lord(int lord) {
     int is_human;
     asm("mov eax, [%1];"
         "imul eax, 4;"
+#if EXTREME
+        "add eax, 0x2354e80;"
+#else
         "add eax, 0x191DE10;"
+#endif
         "mov eax, [eax];"
         "mov [%0], eax"
         : "=m"(is_human) : "m"(lord));
@@ -582,22 +833,46 @@ void disable_auto_place_stockpile_hook() {
     asm("mov %0, ebp": "=r"(lord) : );
     if (is_human_lord(lord)) {
         asm("add esp, 0x1C;"
-            "jmp 0x0514dc7;");
+#if EXTREME
+            "jmp 0x0515147;"
+#else
+            "jmp 0x0514dc7;"
+#endif
+            );
     }
     else {
-        asm("call 0x0508540;"
-            "jmp 0x0514dc7;");
+        asm(
+#if EXTREME
+            "call 0x05088c0;"
+#else
+            "call 0x0508540;"
+#endif
+#if EXTREME
+            "jmp 0x0515147;"
+#else
+            "jmp 0x0514dc7;"
+#endif
+            );
     }
 }
 
 
 void disable_auto_place_stockpile() {
+#if EXTREME
+    hook_at(0x0515142, (void*)disable_auto_place_stockpile_hook);
+#else
     hook_at(0x0514dc2, (void*)disable_auto_place_stockpile_hook);
+#endif
 }
 
 void disable_can_not_place_building_on_units() {
+#if EXTREME
+    set_memory_permission(0x04f9f2a, 2, PAGE_EXECUTE_READWRITE);
+    *(short *)0x04f9f2a = 0x9090;
+#else
     set_memory_permission(0x04f9baa, 2, PAGE_EXECUTE_READWRITE);
     *(short *)0x04f9baa = 0x9090;
+#endif
 }
 
 void show_image(const unsigned char *image, int width, int height, int x, int y) {
@@ -606,19 +881,45 @@ void show_image(const unsigned char *image, int width, int height, int x, int y)
         "push [%2];"
         "push [%3];"
         "push [%4];"
+#if EXTREME
+        "mov ecx, 0x2a7d590;"
+#else
         "mov ecx, 0x1FEA090;"
-        "call 0x0454a60;": : "m"(image), "m"(width), "m"(height), "m"(y), "m"(x)
+#endif
+#if EXTREME
+        "call 0x0454c90;"
+#else
+        "call 0x0454a60;"
+#endif
+        : : "m"(image), "m"(width), "m"(height), "m"(y), "m"(x)
     );
+#if EXTREME
+    x = x + *(int *)0x2c42158;
+#else
     x = x + *(int *)0x21aec58;
+#endif
+#if EXTREME
+    y = y + *(int *)0x2c4215c;
+#else
     y = y + *(int *)0x21AEC5C;
+#endif
     asm("push [%0];"
         "push [%1];"
         "push [%2];"
         "push [%3];"
         "push [%4];"
+#if EXTREME
+        "mov ecx, 0x2a7d590;"
+#else
         "mov ecx, 0x1FEA090;"
-        "call 0x044d3d0;": : "m"(image), "m"(width), "m"(height), "m"(y), "m"(x)
-    );
+#endif
+#if EXTREME
+        "call 0x044d600;"
+#else
+        "call 0x044d3d0;"
+#endif
+        : : "m"(image), "m"(width), "m"(height), "m"(y), "m"(x)
+);
 //    0044d3d0 works only in game
 //    00455390 doesn't work
 //    0044fbf0 doesn't work
@@ -637,20 +938,28 @@ typedef struct {
 
 MousePosition get_mouse_position() {
     MousePosition position;
-
+#if EXTREME
+    position.x = *(short *)0x0f2d024;
+    position.y = *(short *)0x0f2d026;
+#else
     position.x = *(short *)0x0F2CBA4;
     position.y = *(short *)0x0F2CBA6;
-
+#endif
     return position;
 }
 
 
 int is_mouse_clicked() {
+#if EXTREME
+    if (((*(int *)0x0f2ce58)==1)) {
+#else
     if (((*(int *)0x0f2c9d8)==1)) {
+#endif
         return 1;
     }
     return 0;
 }
+
 typedef struct {
     int width;
     int height;
@@ -658,33 +967,53 @@ typedef struct {
 
 Resolution get_resolution() {
     Resolution resolution;
-
+#if EXTREME
+    resolution.width = *(int *)0x0f987f0;
+    resolution.height = *(int *)0x0f987f4;
+#else
     resolution.width = *(int *)0x0f98370;
     resolution.height = *(int *)0x0F98374;
+#endif
 
     return resolution;
 }
 
 void disable_mouse_in_game() {
+#if EXTREME
+    *(int *)0x2c420d8 = 0;
+#else
     *(int *)0x21AEBD8 = 0;
+#endif
 }
 
 int is_game_created() {
+#if EXTREME
+    if ((*(int *)0x120f71c) == 0) {
+#else
     if ((*(int *)0x117CADC) == 0) {
+#endif
         return 0;
     }
     return 1;
 }
 
 int has_market(int lord_id) {
+#if EXTREME
+    if (*(int *)(0x11eebe4 + lord_id * 0x39f4) != 0) {
+#else
     if (*(int *)(0x115bfa4 + lord_id * 0x39f4) != 0) {
+#endif
         return 1;
     }
     return 0;
 }
 
 int get_my_lord() {
+#if EXTREME
+    return (*(int *)(0x24baadc));
+#else
     return (*(int *)(0x1a275dc));
+#endif
 }
 
 void buy(int number_of_goods, int good_id, int player_id) {
@@ -704,8 +1033,17 @@ void buy(int number_of_goods, int good_id, int player_id) {
             "push ebx;"
             // player id
             "push ecx;"
+#if EXTREME
+            "mov ecx, 0x2f39ca8;"
+#else
             "mov ecx, 0x23FC8E8;"
-            "call 0x04cc000;": : "a"(number_of_goods), "b"(good_id), "c"(player_id));
+#endif
+#if EXTREME
+            "call 0x04cc250;"
+#else
+            "call 0x04cc000;"
+#endif
+            : : "a"(number_of_goods), "b"(good_id), "c"(player_id));
     }
 }
 
@@ -721,8 +1059,17 @@ void sell(int number_of_goods, int good_id, int player_id) {
         "push ebx;"
         // player id
         "push ecx;"
+#if EXTREME
+        "mov ecx, 0x2f39ca8;"
+#else
         "mov ecx, 0x23FC8E8;"
-        "call 0x04cbfa0;": : "a"(number_of_goods), "b"(good_id), "c"(player_id));
+#endif
+#if EXTREME
+        "call 0x04cc1f0;"
+#else
+        "call 0x04cbfa0;"
+#endif
+        : : "a"(number_of_goods), "b"(good_id), "c"(player_id));
 }
 
 int _get_opened_menu() {
@@ -1001,13 +1348,31 @@ void game_begin_hook_handler() {
     asm ("mov eax,0x0000190;");
 
     // back to normal path 2
+#if EXTREME
+    asm ("jmp 0x04f708d;");
+#else
     asm ("jmp 0x04F6CFD;");
+#endif
 }
 
 void execute_callback_on_game_begin(HandleGameBeginEvent function) {
     handle_game_begin_event = function;
+#if EXTREME
+    hook_at(0x04f7088, (void*)game_begin_hook_handler);
+#else
     hook_at(0x04F6CF8, (void*)game_begin_hook_handler);
+#endif
 }
+
+int is_extreme() {
+    if ((*(char *)0x05A1FF0) == 'E') {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
 
 void free_memory(char *ptr)
 {

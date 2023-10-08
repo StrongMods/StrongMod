@@ -2,12 +2,22 @@ CC=i686-w64-mingw32-gcc
 CFLAGS=-g -c -Wall -masm=intel
 LFLAGS=-shared -O0
 
-TARGET=game_controller.dll
+
 SOURCES=game_controller.c
 OBJECTS=$(SOURCES:.c=.o)
 GIT_TAG := $(shell git describe --tags --abbrev=0)
 
-all: strongmod/version.py $(TARGET)
+ifdef EXTREME
+	CFLAGS += -DEXTREME
+	TARGET=game_controller_extreme.dll
+else
+    TARGET=game_controller.dll
+endif
+
+all: clean strongmod/version.py $(TARGET)
+
+clean:
+	rm -f $(OBJECTS) $(TARGET)
 
 $(TARGET): $(OBJECTS)
 	$(CC) $(LFLAGS) $(OBJECTS) -o $@

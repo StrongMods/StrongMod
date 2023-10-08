@@ -10,7 +10,8 @@ Auto Market mod implemented using StrongMod, and it's included by default
 - Download strongmod.zip.
 - Extract the contents to your game's installation path.
 
-2. Run `start_game.bat`
+2. Run `start_game.bat` for the extreme version, run `start_game_extreme.bat`
+- The executable name "Stronghold Crusader.exe" might be different for your installation. If the game doesn't start, check the actual executable name and update it in `start_game.bat` or `start_game_extreme.bat`.
 
 ## Notes:
 - StrongMod is currently in development and may not have a complete set of features yet.

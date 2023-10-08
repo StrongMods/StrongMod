@@ -25,6 +25,10 @@ jobs:
       working-directory: ./strongmod
       run: make
 
+    - name: Compile project
+      working-directory: ./strongmod
+      run: make EXTREME=1
+
     - name: Zip project
       working-directory: ./strongmod
       run: make zip-project
