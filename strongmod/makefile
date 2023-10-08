@@ -42,7 +42,7 @@ download-and-unzip-cpython:
 	rm cpython/python-3.8.10-embed-win32.zip
 
 zip-project:
-	cd .. && zip -r ./strongmod/strongmod.zip ./strongmod ./start_game.bat
+	cd .. && zip -r ./strongmod/strongmod.zip ./strongmod ./start_game.bat  start_game_extreme.bat
 
 .PHONY: strongmod/version.py
 
